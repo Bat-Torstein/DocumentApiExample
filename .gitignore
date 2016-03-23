@@ -3,3 +3,6 @@
 /bin
 /obj
 /DocumentApi.csproj.user
+/node_modules
+/css
+/js

@@ -1,0 +1,41 @@
+Angular:
+	- Implement HomeCtrl (list of all documentCollectionServices)
+		- Possible to add/delete
+		
+	- Implement DocumentCollectionService 
+		- GetAll
+		- Get
+		- Post
+		- Put
+		- Delete
+	
+	- Implement DocumentCollectionCtrl
+			- Possible to rename collection
+			- See all documents
+			- Upload new document
+			- Delete document
+			- Download document
+			
+	- Implement DocumentService
+		- GetList
+		- Post
+		- Delete
+
+Controller Api:
+	DocumentCollectionController:
+		- Index, Get, Post, Put, Delete
+	DocumentController
+		- Index, Get, Post, Delete
+	
+Expand document collection table with
+- Name
+- Deletetime
+
+New table for DocumentMeta
+	id
+	CollectionId
+	FileName
+	
+New table for Documents
+	id (same as documentMeta)
+	documentblob

@@ -91,7 +91,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="client\app.js" />
+    <Content Include="client\controllers\HomeCtrl.js" />
+    <Content Include="client\views\documentcollection.html" />
+    <Content Include="client\views\home.html" />
     <Content Include="Global.asax" />
+    <Content Include="gulpfile.js" />
+    <Content Include="index.html" />
     <Content Include="Models\DocumentApiModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DocumentApiModel.edmx</DependentUpon>
@@ -139,6 +145,7 @@
     <Content Include="Models\DocumentApiModel.edmx.diagram">
       <DependentUpon>DocumentApiModel.edmx</DependentUpon>
     </Content>
+    <Content Include="client\styles\app.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
