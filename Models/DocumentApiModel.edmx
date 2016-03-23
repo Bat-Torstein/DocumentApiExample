@@ -13,6 +13,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="64" />
+    <Property Name="DeleteTime" Type="datetime" Nullable="true" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -23,6 +25,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="true" />
+          <Property Name="DeleteTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="DocumentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DocumentCollection" EntityType="Self.DocumentCollection" />
@@ -37,6 +41,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentCollection)">
         <MappingFragment StoreEntitySet="DocumentCollection">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

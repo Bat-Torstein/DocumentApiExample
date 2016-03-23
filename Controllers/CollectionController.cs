@@ -18,7 +18,7 @@ namespace DocumentApi.Controllers
         {
             using (var context = new DocumentEntities())
             {
-                var list = await context.DocumentCollection.ToListAsync();
+                var list = await context.DocumentCollection.Where(c => c.DeleteTime == null).ToListAsync();
                 return Ok(list);
             }
         }
@@ -28,11 +28,11 @@ namespace DocumentApi.Controllers
         {
             using (var context = new DocumentEntities())
             {
-                var document = await context.DocumentCollection.FirstOrDefaultAsync(d => d.Id == id);
+                var collection = await context.DocumentCollection.FirstOrDefaultAsync(d => d.Id == id);
 
-                if (document != null)
+                if (collection != null)
                 {
-                    return Ok(document);
+                    return Ok(collection);
                 }
 
             }
@@ -51,8 +51,23 @@ namespace DocumentApi.Controllers
         }
 
         // DELETE api/collection/5
-        public void Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
+            using (var context = new DocumentEntities())
+            {
+                var collection = await context.DocumentCollection.FirstOrDefaultAsync(c => c.Id == id && c.DeleteTime == null);
+
+                if (collection != null)
+                {
+                    collection.DeleteTime = DateTime.Now;
+                    context.SaveChanges();
+
+                    return Ok();
+                }
+
+            }
+
+            return NotFound();
         }
     }
 }

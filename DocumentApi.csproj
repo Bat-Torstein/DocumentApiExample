@@ -93,6 +93,7 @@
   <ItemGroup>
     <Content Include="client\app.js" />
     <Content Include="client\controllers\HomeCtrl.js" />
+    <Content Include="client\services\DocumentCollectionService.js" />
     <Content Include="client\views\documentcollection.html" />
     <Content Include="client\views\home.html" />
     <Content Include="Global.asax" />
@@ -103,6 +104,7 @@
       <DependentUpon>DocumentApiModel.edmx</DependentUpon>
       <LastGenOutput>DocumentApiModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\DocumentApiModel.edmx.sql" />
     <Content Include="Models\DocumentApiModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DocumentApiModel.edmx</DependentUpon>

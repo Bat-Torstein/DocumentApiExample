@@ -1,3 +1,10 @@
-<div>
-    <h3>This is home</h3>
+<div class="text-center">
+    <h3>Document collections</h3>
+    <div class="spinner" ng-show="isLoading"></div>
+    <div ng-repeat="collection in collections">
+        <a href="#/document/{{collection.Id}}">{{collection.Name}}</a>
+        <button title="Remove collection" type="button" class="btn btn-default" aria-label="Left Align" ng-click="deleteCollection(collection.Id)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+    </div>
 </div>

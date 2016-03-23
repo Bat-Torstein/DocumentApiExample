@@ -15,5 +15,7 @@ namespace DocumentApi.Models
     public partial class DocumentCollection
     {
         public int Id { get; set; }
+        public string Name { get; set; }
+        public Nullable<System.DateTime> DeleteTime { get; set; }
     }
 }
