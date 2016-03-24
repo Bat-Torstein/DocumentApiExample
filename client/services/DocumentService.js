@@ -2,6 +2,7 @@
 
     return ({
         deleteDocument: deleteDocument,
+        uploadDocument : uploadDocument
     });
 
     function deleteDocument(id) {
@@ -11,6 +12,20 @@
         });
 
         return request;
+    }
+
+    function uploadDocument(files, collectionId) {
+        var formData = new FormData();
+
+        angular.forEach(files, function (file) {
+            formData.append(file.name, file);
+        });
+
+        var request = $http({
+            method: 'post',
+            url: 'api/document',
+            headers: { 'Content-Type': undefined }
+        });
     }
 };
 

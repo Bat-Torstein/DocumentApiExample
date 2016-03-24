@@ -20,7 +20,8 @@
             </tbody>
         </table>
         <div ng-hide="isLoading" class="container main">
-            <button title="Upload new document" type="button" class="btn btn-success col-xs-12" ng-click="uploadDocument()">Upload new document</button>
+            <input type="file" id="fileChooser" accept="*" file-input class="hidden" onchange="angular.element(this).scope().uploadDocument(this)">
+            <button title="Upload new document" type="button" class="btn btn-success col-xs-12" ng-click="selectDocument()">Upload new document</button>
         </div>
     </div>
 </div>

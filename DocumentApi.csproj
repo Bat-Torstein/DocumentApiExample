@@ -123,6 +123,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DocumentMultipartFormStreamProvider.cs" />
     <Compile Include="Models\DocumentApiModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -24,8 +24,21 @@ var DocumentCollectionCtrl = function ($scope, $routeParams, $documentCollection
         $scope.isLoading = false;
     };
 
-    $scope.uploadDocument = function () {
+    $scope.selectDocument = function () {
+        var fileElement = document.getElementById("fileChooser");
+        fileElement.click();
     };
+
+    $scope.uploadDocument = function (fileElement) {
+        $scope.isLoading = true;
+        $documentService.uploadDocument(fileElement.files, $scope.collection.Id).then(
+            function (response) {
+                $scope.loadCollection($scope.collection.Id);
+            }, $scope.processError
+        );
+    };
+
+
 
     $scope.deleteDocument = function (id) {
         $modalService.confirm("Do you really want to remove the document?").then(function () {
