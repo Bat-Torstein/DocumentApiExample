@@ -4,7 +4,7 @@ var HomeCtrl = function ($scope, $documentCollectionService, $modalService) {
     
     $scope.loadCollections = function () {
         $scope.isLoading = true;
-        $documentCollectionService.getDocumentCollections().then(
+        $documentCollectionService.getCollections().then(
             function (response) {
                 $scope.collections = response.data;
                 console.log($scope.collections);
@@ -16,7 +16,7 @@ var HomeCtrl = function ($scope, $documentCollectionService, $modalService) {
     $scope.deleteCollection = function (id) {
         $modalService.confirm("Do you really want to remove the collection?").then(function () {
             $scope.isLoading = true;
-             $documentCollectionService.deleteDocumentCollection(id).then(
+             $documentCollectionService.deleteCollection(id).then(
                 function (response) {
                     $scope.loadCollections();
                 }, $scope.processError
@@ -29,8 +29,22 @@ var HomeCtrl = function ($scope, $documentCollectionService, $modalService) {
         console.log(response.statusText);
         $scope.isLoading = false;
     };
+
+    $scope.addNewCollection = function () {
+        if (!$scope.newCollectionName) {
+            toastr.error("Enter name of new collection");
+            return;
+        }
+        $documentCollectionService.createCollection($scope.newCollectionName).then(
+            function (response) {
+                $scope.newCollectionName = "";
+                $scope.loadCollections();
+            }, $scope.processError
+        );
+    };
  
     $scope.loadCollections();
+    $scope.newCollectionName = "";
 };
 
 module.exports = HomeCtrl;

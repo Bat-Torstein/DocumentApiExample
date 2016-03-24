@@ -1,10 +1,24 @@
 <div class="text-center">
     <h3>Document collections</h3>
     <div class="spinner" ng-show="isLoading"></div>
-    <div ng-repeat="collection in collections">
-        <a href="#/document/{{collection.Id}}">{{collection.Name}}</a>
-        <button title="Remove collection" type="button" class="btn btn-default" aria-label="Left Align" ng-click="deleteCollection(collection.Id)">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-        </button>
+    <div>
+    <table class="container main" >
+        <thead>
+            <tr><td>Name</td><td>Action</td></tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="collection in collections">
+            <td><a href="#/document/{{collection.Id}}">{{collection.Name}}</a></td>
+            <td><button title="Remove collection" type="button" class="btn btn-default" aria-label="Left Align" ng-click="deleteCollection(collection.Id)">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-show="!isLoading" class="container main">
+        <input class="col-xs-12" length="12" type="text" ng-model="newCollectionName" value="{{newCollectionName}}" ng-keydown="$event.which === 13 && addNewCollection()"/>
+        <button title="Add new collection" type="button" class="btn btn-success col-xs-12" ng-click="addNewCollection()">Add new</button>
+    </div>
     </div>
 </div>

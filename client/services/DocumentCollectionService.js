@@ -1,23 +1,34 @@
 var DocumentCollectionService = function ($http, $q) {
 
     return ({
-        getDocumentCollections: getDocumentCollections,
-        deleteDocumentCollection: deleteDocumentCollection
+        getCollections: getCollections,
+        deleteCollection: deleteCollection,
+        createCollection : createCollection
     });
 
-    function getDocumentCollections() {
+    function getCollections() {
         var request = $http ({
-            method : "get",
+            method : 'get',
             url : "api/collection"
         });
 
         return request;
     }
 
-    function deleteDocumentCollection(id) {
+    function deleteCollection(id) {
         var request = $http({
-            method: "delete",
+            method: 'delete',
             url: 'api/collection/' + id
+        });
+
+        return request;
+    }
+
+    function createCollection(name) {
+        var request = $http({
+            method: 'post',
+            url: 'api/collection',
+            data: { Name: name }
         });
 
         return request;

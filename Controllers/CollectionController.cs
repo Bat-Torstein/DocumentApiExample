@@ -19,6 +19,7 @@ namespace DocumentApi.Controllers
             using (var context = new DocumentEntities())
             {
                 var list = await context.DocumentCollection.Where(c => c.DeleteTime == null).ToListAsync();
+
                 return Ok(list);
             }
         }
@@ -41,8 +42,24 @@ namespace DocumentApi.Controllers
         }
 
         // POST api/collection
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public async Task<IHttpActionResult> Create([FromBody] DocumentCollection collection)
         {
+            try {
+                using (var context = new DocumentEntities())
+                {
+                    context.DocumentCollection.Add(collection);
+                    await context.SaveChangesAsync();
+
+                    return Ok(collection);
+                }
+            } 
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+            }
+
+            return NotFound();
         }
 
         // PUT api/collection/5
