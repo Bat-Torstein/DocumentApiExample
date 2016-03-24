@@ -94,8 +94,10 @@
     <Content Include="client\app.js" />
     <Content Include="client\controllers\HomeCtrl.js" />
     <Content Include="client\services\DocumentCollectionService.js" />
+    <Content Include="client\services\ModalService.js" />
     <Content Include="client\views\documentcollection.html" />
     <Content Include="client\views\home.html" />
+    <Content Include="client\views\modal.html" />
     <Content Include="Global.asax" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />

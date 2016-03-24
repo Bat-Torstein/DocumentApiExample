@@ -6,7 +6,7 @@
 
 
 var paths = {
-    watch: ['./client/**/*.js', './client/styles/*.less', '!./client/dist/js/*.js'],
+    watch: ['./client/**/*.js', './client/styles/*.less', './client/views/*.html', '!./client/dist/js/*.js'],
     browserify: ['./client/*.js'],
     lint: ['./client/**/*.js', '!./client/dist/js/*.js'],
     styles: ['./client/styles/*.less'],

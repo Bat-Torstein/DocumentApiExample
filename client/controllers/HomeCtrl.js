@@ -1,39 +1,35 @@
 var toastr = require('toastr');
-var DocumentCollectionService = require('../services/DocumentCollectionService');
 
-var HomeCtrl = function ($scope, DocumentCollectionService) {
+var HomeCtrl = function ($scope, $documentCollectionService, $modalService) {
     
     $scope.loadCollections = function () {
         $scope.isLoading = true;
-        DocumentCollectionService.getDocumentCollections().then(
+        $documentCollectionService.getDocumentCollections().then(
             function (response) {
                 $scope.collections = response.data;
                 console.log($scope.collections);
                 $scope.isLoading = false;
-            },
-
-            function (response) {
-                toastr.error("Something went wrong!");
-                console.log(response.error);
-                $scope.isLoading = false;
-            }
+            }, $scope.processError
         );
-    }
+    };
 
     $scope.deleteCollection = function (id) {
-        $scope.isLoading = true;
-        DocumentCollectionService.deleteDocumentCollection(id).then(
-            function (response) {
-                $scope.loadCollections();
-            },
-            function (response) {
-                toastr.error("Something went wrong!");
-                console.log(response.error);
-                $scope.isLoading = false;
-            }
-        );
-    }
+        $modalService.confirm("Do you really want to remove the collection?").then(function () {
+            $scope.isLoading = true;
+             $documentCollectionService.deleteDocumentCollection(id).then(
+                function (response) {
+                    $scope.loadCollections();
+                }, $scope.processError
+            );
+        });
+    };
 
+    $scope.processError = function (response) {
+        toastr.error("Something went wrong!");
+        console.log(response.statusText);
+        $scope.isLoading = false;
+    };
+ 
     $scope.loadCollections();
 };
 
