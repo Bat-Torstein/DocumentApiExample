@@ -13,16 +13,61 @@
           <Property Name="Name" Type="nchar" MaxLength="64" Nullable="false" />
           <Property Name="DeleteTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="DocumentMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UploadTime" Type="datetime" Nullable="false" />
+          <Property Name="DeleteTime" Type="datetime" />
+          <Property Name="CollectionId" Type="int" Nullable="false" />
+          <Property Name="Size" Type="int" />
+        </EntityType>
+        <Association Name="FK_DocumentMeta_DocumentCollection">
+          <End Role="DocumentCollection" Type="Self.DocumentCollection" Multiplicity="1" />
+          <End Role="DocumentMeta" Type="Self.DocumentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentCollection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentMeta">
+              <PropertyRef Name="CollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DocumentDBModelStoreContainer">
           <EntitySet Name="DocumentCollection" EntityType="Self.DocumentCollection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentMeta" EntityType="Self.DocumentMeta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="Self.FK_DocumentMeta_DocumentCollection">
+            <End Role="DocumentCollection" EntitySet="DocumentCollection" />
+            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DocumentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="DocumentEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DocumentEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="DocumentMeta" EntityType="DocumentDBModel.DocumentMeta" />
           <EntitySet Name="DocumentCollection" EntityType="DocumentDBModel.DocumentCollection" />
+          <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="DocumentDBModel.FK_DocumentMeta_DocumentCollection">
+            <End Role="DocumentCollection" EntitySet="DocumentCollection" />
+            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DocumentMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UploadTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeleteTime" Type="DateTime" Precision="3" />
+          <Property Name="CollectionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DocumentCollection" Relationship="DocumentDBModel.FK_DocumentMeta_DocumentCollection" FromRole="DocumentMeta" ToRole="DocumentCollection" />
+          <Property Name="Size" Type="Int32" />
+        </EntityType>
         <EntityType Name="DocumentCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -30,13 +75,38 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="true" />
           <Property Name="DeleteTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DocumentMeta" Relationship="DocumentDBModel.FK_DocumentMeta_DocumentCollection" FromRole="DocumentCollection" ToRole="DocumentMeta" />
         </EntityType>
+        <Association Name="FK_DocumentMeta_DocumentCollection">
+          <End Type="DocumentDBModel.DocumentCollection" Role="DocumentCollection" Multiplicity="1" />
+          <End Type="DocumentDBModel.DocumentMeta" Role="DocumentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentCollection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentMeta">
+              <PropertyRef Name="CollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DocumentDBModelStoreContainer" CdmEntityContainer="DocumentEntities">
+          <EntitySetMapping Name="DocumentMeta">
+            <EntityTypeMapping TypeName="DocumentDBModel.DocumentMeta">
+              <MappingFragment StoreEntitySet="DocumentMeta">
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
+                <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
+                <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DocumentCollection">
             <EntityTypeMapping TypeName="DocumentDBModel.DocumentCollection">
               <MappingFragment StoreEntitySet="DocumentCollection">

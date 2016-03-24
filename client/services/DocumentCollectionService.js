@@ -3,13 +3,23 @@ var DocumentCollectionService = function ($http, $q) {
     return ({
         getCollections: getCollections,
         deleteCollection: deleteCollection,
-        createCollection : createCollection
+        createCollection: createCollection,
+        getCollection : getCollection
     });
 
     function getCollections() {
         var request = $http ({
             method : 'get',
-            url : "api/collection"
+            url : 'api/collection'
+        });
+
+        return request;
+    }
+
+    function getCollection(id) {
+        var request = $http({
+            method: 'get',
+            url: 'api/collection/' + id 
         });
 
         return request;
@@ -33,7 +43,6 @@ var DocumentCollectionService = function ($http, $q) {
 
         return request;
     }
-
 };
 
 module.exports = DocumentCollectionService;

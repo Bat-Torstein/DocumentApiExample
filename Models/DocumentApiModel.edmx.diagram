@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="c7d690da98c9484f8aa3c60ef9173abb" Name="Diagram1">
         <EntityTypeShape EntityType="DocumentDBModel.DocumentCollection" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DocumentDBModel.DocumentMeta" Width="1.5" PointX="4.75" PointY="0.75" />
+        <AssociationConnector Association="DocumentDBModel.FK_DocumentMeta_DocumentCollection" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

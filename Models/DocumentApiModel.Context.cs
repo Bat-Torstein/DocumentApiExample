@@ -18,6 +18,7 @@ namespace DocumentApi.Models
         public DocumentEntities()
             : base("name=DocumentEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,6 +26,7 @@ namespace DocumentApi.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<DocumentMeta> DocumentMeta { get; set; }
         public virtual DbSet<DocumentCollection> DocumentCollection { get; set; }
     }
 }

@@ -92,8 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\app.js" />
+    <Content Include="client\controllers\DocumentCollectionCtrl.js" />
     <Content Include="client\controllers\HomeCtrl.js" />
     <Content Include="client\services\DocumentCollectionService.js" />
+    <Content Include="client\services\DocumentService.js" />
     <Content Include="client\services\ModalService.js" />
     <Content Include="client\views\documentcollection.html" />
     <Content Include="client\views\home.html" />
@@ -117,6 +119,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CollectionController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -138,6 +141,9 @@
     <Compile Include="Models\DocumentCollection.cs">
       <DependentUpon>DocumentApiModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DocumentMeta.cs">
+      <DependentUpon>DocumentApiModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +154,7 @@
     </EntityDeploy>
     <Content Include="Models\DocumentApiModel.edmx.diagram">
       <DependentUpon>DocumentApiModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="client\styles\app.less" />
     <None Include="Web.Debug.config">

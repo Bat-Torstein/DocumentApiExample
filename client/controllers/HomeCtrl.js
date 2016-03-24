@@ -7,7 +7,6 @@ var HomeCtrl = function ($scope, $documentCollectionService, $modalService) {
         $documentCollectionService.getCollections().then(
             function (response) {
                 $scope.collections = response.data;
-                console.log($scope.collections);
                 $scope.isLoading = false;
             }, $scope.processError
         );

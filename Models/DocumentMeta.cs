@@ -12,19 +12,15 @@ namespace DocumentApi.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DocumentCollection
+    public partial class DocumentMeta
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DocumentCollection()
-        {
-            this.DocumentMeta = new HashSet<DocumentMeta>();
-        }
-    
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string FileName { get; set; }
+        public System.DateTime UploadTime { get; set; }
         public Nullable<System.DateTime> DeleteTime { get; set; }
+        public int CollectionId { get; set; }
+        public Nullable<int> Size { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentMeta> DocumentMeta { get; set; }
+        public virtual DocumentCollection DocumentCollection { get; set; }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using DocumentApi.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,7 +16,7 @@ namespace DocumentApi.Controllers
             using (var context = new DocumentEntities())
             {
                 var list = await context.DocumentCollection.Where(c => c.DeleteTime == null).ToListAsync();
-
+                
                 return Ok(list);
             }
         }
@@ -29,7 +26,12 @@ namespace DocumentApi.Controllers
         {
             using (var context = new DocumentEntities())
             {
-                var collection = await context.DocumentCollection.FirstOrDefaultAsync(d => d.Id == id);
+                var collection = await context.DocumentCollection.Where(c => c.Id == id && c.DeleteTime == null)
+                    .Select(c => new {
+                        Id = c.Id,
+                        Name = c.Name,
+                        DocumentMeta = c.DocumentMeta.Where(d => d.DeleteTime == null)
+                    }).FirstOrDefaultAsync();
 
                 if (collection != null)
                 {
@@ -45,26 +47,19 @@ namespace DocumentApi.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Create([FromBody] DocumentCollection collection)
         {
-            try {
-                using (var context = new DocumentEntities())
-                {
-                    context.DocumentCollection.Add(collection);
-                    await context.SaveChangesAsync();
-
-                    return Ok(collection);
-                }
-            } 
-            catch(Exception e)
+            using (var context = new DocumentEntities())
             {
-                Console.Write(e.Message);
-            }
+                context.DocumentCollection.Add(collection);
+                await context.SaveChangesAsync();
 
-            return NotFound();
+                return Ok(collection);
+            }
         }
 
         // PUT api/collection/5
         public void Put(int id, [FromBody]string value)
         {
+            throw new NotImplementedException();
         }
 
         // DELETE api/collection/5
