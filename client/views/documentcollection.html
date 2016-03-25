@@ -4,12 +4,11 @@
     <div>
         <table class="container main">
             <thead>
-                <tr><td>Name</td><td>Size</td><td>Uploaded</td><td>Action</td></tr>
+                <tr><td>Name</td><td>Uploaded</td><td>Action</td></tr>
             </thead>
             <tbody>
                 <tr ng-repeat="document in collection.DocumentMeta ">
                     <td><a href="/api/document/{{document.Id}}">{{document.FileName}}</a></td>
-                    <td>{{document.Size}} MB</td>
                     <td>{{document.UploadTime}}</td>
                     <td>
                         <button title="Remove document" type="button" class="btn btn-default" aria-label="Left Align" ng-click="deleteDocument(document.Id)">

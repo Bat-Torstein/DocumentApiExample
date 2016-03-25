@@ -30,7 +30,6 @@
           <Property Name="UploadTime" Type="datetime" Nullable="false" />
           <Property Name="DeleteTime" Type="datetime" />
           <Property Name="CollectionId" Type="int" Nullable="false" />
-          <Property Name="Size" Type="int" />
         </EntityType>
         <Association Name="FK_DocumentMeta_DocumentCollection">
           <End Role="DocumentCollection" Type="Self.DocumentCollection" Multiplicity="1" />
@@ -76,7 +75,6 @@
           <Property Name="DeleteTime" Type="DateTime" Precision="3" />
           <Property Name="CollectionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DocumentCollection" Relationship="DocumentDBModel.FK_DocumentMeta_DocumentCollection" FromRole="DocumentMeta" ToRole="DocumentCollection" />
-          <Property Name="Size" Type="Int32" />
         </EntityType>
         <EntityType Name="DocumentCollection">
           <Key>
@@ -121,7 +119,6 @@
           <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
           <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
           <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
-          <ScalarProperty Name="Size" ColumnName="Size" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -134,15 +131,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-          <EntitySetMapping Name="DocumentContent">
-            <EntityTypeMapping TypeName="DocumentDBModel.DocumentContent">
-              <MappingFragment StoreEntitySet="DocumentContent">
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <EntitySetMapping Name="DocumentContent">
+      <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentContent)">
+        <MappingFragment StoreEntitySet="DocumentContent">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

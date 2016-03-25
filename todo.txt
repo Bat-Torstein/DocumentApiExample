@@ -1,24 +1,3 @@
-- Test at uploading lager en ordentlig fil
-- Test at nedlasting virker
-- Legge et innslag i filestream-tabellen
-- Laste ned det samme innslaget
-- Done?
-
-- Collection page that should display all documents
-	- Possible to rename a collection (pencil button)
-	- Possible to delete a document
-	- Possible to Upload a new document
-	- Possible to download a document
-	
-	.NET
-	- DocumentMetaTable
-		id
-		CollectionId
-		FileName
-		Uploaded date
-	- DocumentBlobTable
-
-	- DocumentController
-	Angular:
-	- DocumentCtrl
-	- DocumentService
+- Create a document in DocumentContent
+- Remove a document from DocumentContent
+- Download file api

@@ -19,7 +19,6 @@ namespace DocumentApi.Models
         public System.DateTime UploadTime { get; set; }
         public Nullable<System.DateTime> DeleteTime { get; set; }
         public int CollectionId { get; set; }
-        public Nullable<int> Size { get; set; }
     
         public virtual DocumentCollection DocumentCollection { get; set; }
     }

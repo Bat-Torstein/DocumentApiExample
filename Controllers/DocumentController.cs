@@ -32,12 +32,11 @@ namespace DocumentApi.Controllers
 
             return NotFound();
         }
-
+        
         [HttpPost]
         public async Task<IHttpActionResult> Upload(int id)
         {
 
-            // TODO: This code is not tested
             if (!Request.Content.IsMimeMultipartContent("form-data"))
             {
                 return BadRequest("Unsupported media type");
@@ -45,10 +44,30 @@ namespace DocumentApi.Controllers
 
             try
             {
-                var documents = await AddDocuments(Request);
+                var provider = new MultipartFormDataStreamProvider(HttpContext.Current.Server.MapPath("~/uploads/"));
+                var content = new StreamContent(HttpContext.Current.Request.GetBufferlessInputStream(true));
+                foreach (var header in Request.Content.Headers)
+                {
+                    content.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
 
+                await content.ReadAsMultipartAsync(provider);
 
+                using (var context = new DocumentEntities())
+                {
+                    foreach (var file in provider.FileData)
+                    {
+                        var documentMeta = new DocumentMeta
+                        {
+                            CollectionId = id,
+                            FileName = file.Headers.ContentDisposition.Name.Trim(new char[] { '"' }).Replace("&", "and"),
+                            UploadTime = DateTime.Now
+                        };
 
+                        context.DocumentMeta.Add(documentMeta);
+                    }
+                    context.SaveChanges();
+                }
 
                 return Ok();
             }
@@ -56,22 +75,6 @@ namespace DocumentApi.Controllers
             {
                 return BadRequest(ex.GetBaseException().Message);
             }
-        }
-        string PATH = HttpContext.Current.Server.MapPath("~/uploads/");
-        public async Task<IEnumerable<FileInfo>> AddDocuments(HttpRequestMessage request)
-        {
-            var provider = new DocumentMultipartFormDataStreamProvider(PATH);
-
-            await request.Content.ReadAsMultipartAsync(provider);
-
-            var files = new List<FileInfo>();
-
-            foreach (var file in provider.FileData)
-            {
-                files.Add(new FileInfo(file.LocalFileName));
-            }
-
-            return files;
         }
     }
 }

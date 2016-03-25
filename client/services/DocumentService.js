@@ -21,11 +21,16 @@
             formData.append(file.name, file);
         });
 
-        var request = $http({
-            method: 'post',
-            url: 'api/document',
-            headers: { 'Content-Type': undefined }
-        });
+        var request = $http.post(
+            'api/document/' + collectionId,
+            formData, 
+            {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }
+        );
+       
+        return request;
     }
 };
 
