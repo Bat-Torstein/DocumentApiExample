@@ -142,6 +142,9 @@
     <Compile Include="Models\DocumentCollection.cs">
       <DependentUpon>DocumentApiModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DocumentContent.cs">
+      <DependentUpon>DocumentApiModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DocumentMeta.cs">
       <DependentUpon>DocumentApiModel.tt</DependentUpon>
     </Compile>

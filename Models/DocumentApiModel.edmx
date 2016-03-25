@@ -13,6 +13,14 @@
           <Property Name="Name" Type="nchar" MaxLength="64" Nullable="false" />
           <Property Name="DeleteTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="DocumentContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RowGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="DocumentMeta">
           <Key>
             <PropertyRef Name="Id" />
@@ -38,6 +46,7 @@
         </Association>
         <EntityContainer Name="DocumentDBModelStoreContainer">
           <EntitySet Name="DocumentCollection" EntityType="Self.DocumentCollection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentContent" EntityType="Self.DocumentContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentMeta" EntityType="Self.DocumentMeta" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="Self.FK_DocumentMeta_DocumentCollection">
             <End Role="DocumentCollection" EntitySet="DocumentCollection" />
@@ -55,6 +64,7 @@
             <End Role="DocumentCollection" EntitySet="DocumentCollection" />
             <End Role="DocumentMeta" EntitySet="DocumentMeta" />
           </AssociationSet>
+          <EntitySet Name="DocumentContent" EntityType="DocumentDBModel.DocumentContent" />
         </EntityContainer>
         <EntityType Name="DocumentMeta">
           <Key>
@@ -89,34 +99,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DocumentContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RowGuid" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DocumentDBModelStoreContainer" CdmEntityContainer="DocumentEntities">
-          <EntitySetMapping Name="DocumentMeta">
-            <EntityTypeMapping TypeName="DocumentDBModel.DocumentMeta">
-              <MappingFragment StoreEntitySet="DocumentMeta">
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
-                <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
-                <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
+    <EntitySetMapping Name="DocumentMeta">
+      <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentMeta)">
+        <MappingFragment StoreEntitySet="DocumentMeta">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
+          <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
+          <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentCollection">
+      <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentCollection)">
+        <MappingFragment StoreEntitySet="DocumentCollection">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <EntitySetMapping Name="DocumentContent">
+            <EntityTypeMapping TypeName="DocumentDBModel.DocumentContent">
+              <MappingFragment StoreEntitySet="DocumentContent">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DocumentCollection">
-            <EntityTypeMapping TypeName="DocumentDBModel.DocumentCollection">
-              <MappingFragment StoreEntitySet="DocumentCollection">
-                <ScalarProperty Name="DeleteTime" ColumnName="DeleteTime" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

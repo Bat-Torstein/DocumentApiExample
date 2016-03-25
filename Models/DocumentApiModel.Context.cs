@@ -28,5 +28,6 @@ namespace DocumentApi.Models
     
         public virtual DbSet<DocumentMeta> DocumentMeta { get; set; }
         public virtual DbSet<DocumentCollection> DocumentCollection { get; set; }
+        public virtual DbSet<DocumentContent> DocumentContent { get; set; }
     }
 }

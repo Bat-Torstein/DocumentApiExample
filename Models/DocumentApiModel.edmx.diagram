@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="DocumentDBModel.DocumentCollection" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="DocumentDBModel.DocumentMeta" Width="1.5" PointX="4.75" PointY="0.75" />
         <AssociationConnector Association="DocumentDBModel.FK_DocumentMeta_DocumentCollection" />
+        <EntityTypeShape EntityType="DocumentDBModel.DocumentContent" Width="1.5" PointX="8.625" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,19 @@
+Open SQL Server Configuration Manager
+SQL Server Services. Properties 
+FILESTREAM TAB
+Enable filestream for Transact SQL
+Enable Filestream for file I/O access
+Enter Windows share name. This should be the same name as the instance
+(SQLEXPRESS for SqlExpress)
+Server service must be running.
+
+In the database, execute this:
+
+EXEC sp_configure filestream_access_level, 2
+RECONFIGURE
+
+Database Properties-> filegroups
+Add a new filegroup and set it as default.
+In files:
+	Add file to the filegroup. This sets up the folder.
+
