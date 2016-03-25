@@ -17,5 +17,7 @@ namespace DocumentApi.Models
         public int Id { get; set; }
         public System.Guid RowGuid { get; set; }
         public byte[] Data { get; set; }
+    
+        public virtual DocumentMeta DocumentMeta { get; set; }
     }
 }

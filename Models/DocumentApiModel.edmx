@@ -17,7 +17,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="RowGuid" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" />
         </EntityType>
@@ -31,6 +31,18 @@
           <Property Name="DeleteTime" Type="datetime" />
           <Property Name="CollectionId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_DocumentContent_DocumentMeta">
+          <End Role="DocumentMeta" Type="Self.DocumentMeta" Multiplicity="1" />
+          <End Role="DocumentContent" Type="Self.DocumentContent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentContent">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DocumentMeta_DocumentCollection">
           <End Role="DocumentCollection" Type="Self.DocumentCollection" Multiplicity="1" />
           <End Role="DocumentMeta" Type="Self.DocumentMeta" Multiplicity="*" />
@@ -47,6 +59,10 @@
           <EntitySet Name="DocumentCollection" EntityType="Self.DocumentCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentContent" EntityType="Self.DocumentContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentMeta" EntityType="Self.DocumentMeta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DocumentContent_DocumentMeta" Association="Self.FK_DocumentContent_DocumentMeta">
+            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+            <End Role="DocumentContent" EntitySet="DocumentContent" />
+          </AssociationSet>
           <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="Self.FK_DocumentMeta_DocumentCollection">
             <End Role="DocumentCollection" EntitySet="DocumentCollection" />
             <End Role="DocumentMeta" EntitySet="DocumentMeta" />
@@ -64,6 +80,10 @@
             <End Role="DocumentMeta" EntitySet="DocumentMeta" />
           </AssociationSet>
           <EntitySet Name="DocumentContent" EntityType="DocumentDBModel.DocumentContent" />
+          <AssociationSet Name="FK_DocumentContent_DocumentMeta" Association="DocumentDBModel.FK_DocumentContent_DocumentMeta">
+            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+            <End Role="DocumentContent" EntitySet="DocumentContent" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="DocumentMeta">
           <Key>
@@ -75,6 +95,7 @@
           <Property Name="DeleteTime" Type="DateTime" Precision="3" />
           <Property Name="CollectionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DocumentCollection" Relationship="DocumentDBModel.FK_DocumentMeta_DocumentCollection" FromRole="DocumentMeta" ToRole="DocumentCollection" />
+          <NavigationProperty Name="DocumentContent" Relationship="DocumentDBModel.FK_DocumentContent_DocumentMeta" FromRole="DocumentMeta" ToRole="DocumentContent" />
         </EntityType>
         <EntityType Name="DocumentCollection">
           <Key>
@@ -101,10 +122,23 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="RowGuid" Type="Guid" Nullable="false" />
           <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="DocumentMeta" Relationship="DocumentDBModel.FK_DocumentContent_DocumentMeta" FromRole="DocumentContent" ToRole="DocumentMeta" />
         </EntityType>
+        <Association Name="FK_DocumentContent_DocumentMeta">
+          <End Type="DocumentDBModel.DocumentMeta" Role="DocumentMeta" Multiplicity="1" />
+          <End Type="DocumentDBModel.DocumentContent" Role="DocumentContent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentContent">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -131,15 +165,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DocumentContent">
-      <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentContent)">
-        <MappingFragment StoreEntitySet="DocumentContent">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
-          <ScalarProperty Name="Data" ColumnName="Data" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
+          <EntitySetMapping Name="DocumentContent">
+            <EntityTypeMapping TypeName="DocumentDBModel.DocumentContent">
+              <MappingFragment StoreEntitySet="DocumentContent">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

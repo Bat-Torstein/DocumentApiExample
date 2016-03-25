@@ -21,5 +21,6 @@ namespace DocumentApi.Models
         public int CollectionId { get; set; }
     
         public virtual DocumentCollection DocumentCollection { get; set; }
+        public virtual DocumentContent DocumentContent { get; set; }
     }
 }

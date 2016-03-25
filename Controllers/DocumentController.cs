@@ -7,6 +7,9 @@ using System.Net.Http;
 using System.Web;
 using System.IO;
 using System.Collections.Generic;
+using DocumentApi.Helpers;
+using System.Linq;
+using System.Transactions;
 
 namespace DocumentApi.Controllers
 {
@@ -50,23 +53,41 @@ namespace DocumentApi.Controllers
                 {
                     content.Headers.TryAddWithoutValidation(header.Key, header.Value);
                 }
-
                 await content.ReadAsMultipartAsync(provider);
 
                 using (var context = new DocumentEntities())
                 {
                     foreach (var file in provider.FileData)
                     {
-                        var documentMeta = new DocumentMeta
+                        using (var ts = new TransactionScope())
                         {
-                            CollectionId = id,
-                            FileName = file.Headers.ContentDisposition.Name.Trim(new char[] { '"' }).Replace("&", "and"),
-                            UploadTime = DateTime.Now
-                        };
+                            var documentMeta = new DocumentMeta
+                            {
+                                CollectionId = id,
+                                FileName = file.Headers.ContentDisposition.Name.Trim(new char[] { '"' }).Replace("&", "and"),
+                                UploadTime = DateTime.Now
+                            };
 
-                        context.DocumentMeta.Add(documentMeta);
+                            context.DocumentMeta.Add(documentMeta);
+                            context.SaveChanges();
+
+                            var documentContent = new DocumentContent
+                            {
+                                Id = documentMeta.Id,
+                                RowGuid = Guid.NewGuid(),
+                                Data = new Byte[0]
+                            };
+
+                            context.DocumentContent.Add(documentContent);
+                            context.SaveChanges();
+                            using (var stream = File.OpenRead(file.LocalFileName))
+                            {
+                                DocumentContentHelper.AddContentData(documentContent.Id, context, stream);
+                            }
+                            
+                            ts.Complete();
+                        }
                     }
-                    context.SaveChanges();
                 }
 
                 return Ok();
