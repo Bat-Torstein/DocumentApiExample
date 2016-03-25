@@ -10,11 +10,40 @@ using System.Collections.Generic;
 using DocumentApi.Helpers;
 using System.Linq;
 using System.Transactions;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace DocumentApi.Controllers
 {
     public class DocumentController : ApiController
     {
+
+        [HttpGet]
+        public HttpResponseMessage Get(int id)
+        {
+            using (var context = new DocumentEntities())
+            {
+                var documentMeta = context.DocumentMeta.FirstOrDefault(d => d.Id == id && d.DeleteTime == null);
+                if (documentMeta == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                }
+                var stream = new MemoryStream();
+     
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = DocumentContentHelper.GetContentData(id, context, stream)
+                };
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = documentMeta.FileName
+                };
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+                return result;
+            }
+        }
+
         // DELETE api/document/5
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
@@ -49,6 +78,7 @@ namespace DocumentApi.Controllers
             {
                 var provider = new MultipartFormDataStreamProvider(HttpContext.Current.Server.MapPath("~/uploads/"));
                 var content = new StreamContent(HttpContext.Current.Request.GetBufferlessInputStream(true));
+
                 foreach (var header in Request.Content.Headers)
                 {
                     content.Headers.TryAddWithoutValidation(header.Key, header.Value);

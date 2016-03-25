@@ -22,21 +22,40 @@ namespace DocumentApi.Helpers
 
         public static void AddContentData(int id, DocumentEntities context, Stream stream)
         {
-           // using (var ts = new TransactionScope())
-          //  {
+            var rowData =
+                context.Database.SqlQuery<ContentStreamRowData>(RowDataStatement, new SqlParameter("id", id)).First();
+
+            using (var destination = new SqlFileStream(rowData.Path, rowData.Transaction, FileAccess.Write))
+            {
+                var buffer = new byte[16 * 1024];
+                int bytesRead;
+                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                        destination.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
+
+        public static ByteArrayContent GetContentData(int id, DocumentEntities context, MemoryStream stream)
+        {
+            using (var tx = new TransactionScope())
+            {
                 var rowData =
                     context.Database.SqlQuery<ContentStreamRowData>(RowDataStatement, new SqlParameter("id", id)).First();
 
-                using (var destination = new SqlFileStream(rowData.Path, rowData.Transaction, FileAccess.Write))
+                using (var source = new SqlFileStream(rowData.Path, rowData.Transaction, FileAccess.Read))
                 {
                     var buffer = new byte[16 * 1024];
                     int bytesRead;
-                    while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                    while ((bytesRead = source.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                         destination.Write(buffer, 0, bytesRead);
+                            stream.Write(buffer, 0, bytesRead);
                     }
                 }
-            //}
+                tx.Complete();
+            }
+
+            return new ByteArrayContent(stream.GetBuffer());
         }
     }
 }
