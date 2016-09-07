@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/25/2016 14:05:43
+-- Date Created: 09/07/2016 20:55:29
 -- Generated from EDMX file: C:\git\DocumentApiExample\Models\DocumentApiModel.edmx
 -- --------------------------------------------------
 
@@ -17,6 +17,9 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_DocumentContent_DocumentMeta]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocumentContent] DROP CONSTRAINT [FK_DocumentContent_DocumentMeta];
+GO
 IF OBJECT_ID(N'[dbo].[FK_DocumentMeta_DocumentCollection]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocumentMeta] DROP CONSTRAINT [FK_DocumentMeta_DocumentCollection];
 GO
@@ -45,8 +48,7 @@ CREATE TABLE [dbo].[DocumentMeta] (
     [FileName] nvarchar(max)  NOT NULL,
     [UploadTime] datetime  NOT NULL,
     [DeleteTime] datetime  NULL,
-    [CollectionId] int  NOT NULL,
-    [Size] int  NULL
+    [CollectionId] int  NOT NULL
 );
 GO
 
@@ -60,7 +62,7 @@ GO
 
 -- Creating table 'DocumentContent'
 CREATE TABLE [dbo].[DocumentContent] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [RowGuid] uniqueidentifier  NOT NULL,
     [Data] varbinary(max)  NULL
 );
@@ -105,6 +107,15 @@ GO
 CREATE INDEX [IX_FK_DocumentMeta_DocumentCollection]
 ON [dbo].[DocumentMeta]
     ([CollectionId]);
+GO
+
+-- Creating foreign key on [Id] in table 'DocumentContent'
+ALTER TABLE [dbo].[DocumentContent]
+ADD CONSTRAINT [FK_DocumentContent_DocumentMeta]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[DocumentMeta]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------

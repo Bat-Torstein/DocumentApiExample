@@ -13,7 +13,17 @@ EXEC sp_configure filestream_access_level, 2
 RECONFIGURE
 
 Database Properties-> filegroups
-Add a new filegroup and set it as default.
-In files:
-	Add file to the filegroup. This sets up the folder.
+FILESTREAM
+Add filegroup and set it as default
+
+
+THEN RUN db script.
+Adjust DocumentContent:
+CREATE TABLE [dbo].[DocumentContent] (
+    [Id] int  NOT NULL,
+    [RowGuid] uniqueidentifier rowguidcol NOT NULL unique,
+    [Data] varbinary(max) FILESTREAM NULL
+) filestream_on <name of filestreamgroup>
+	
+	
 

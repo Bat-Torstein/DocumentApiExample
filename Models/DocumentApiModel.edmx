@@ -4,71 +4,71 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DocumentDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="DocumentCollection">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="64" Nullable="false" />
-          <Property Name="DeleteTime" Type="datetime" />
-        </EntityType>
-        <EntityType Name="DocumentContent">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="RowGuid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Data" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="DocumentMeta">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="UploadTime" Type="datetime" Nullable="false" />
-          <Property Name="DeleteTime" Type="datetime" />
-          <Property Name="CollectionId" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_DocumentContent_DocumentMeta">
-          <End Role="DocumentMeta" Type="Self.DocumentMeta" Multiplicity="1" />
-          <End Role="DocumentContent" Type="Self.DocumentContent" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="DocumentMeta">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentContent">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocumentMeta_DocumentCollection">
-          <End Role="DocumentCollection" Type="Self.DocumentCollection" Multiplicity="1" />
-          <End Role="DocumentMeta" Type="Self.DocumentMeta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DocumentCollection">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentMeta">
-              <PropertyRef Name="CollectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="DocumentDBModelStoreContainer">
-          <EntitySet Name="DocumentCollection" EntityType="Self.DocumentCollection" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DocumentContent" EntityType="Self.DocumentContent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DocumentMeta" EntityType="Self.DocumentMeta" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_DocumentContent_DocumentMeta" Association="Self.FK_DocumentContent_DocumentMeta">
-            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
-            <End Role="DocumentContent" EntitySet="DocumentContent" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="Self.FK_DocumentMeta_DocumentCollection">
-            <End Role="DocumentCollection" EntitySet="DocumentCollection" />
-            <End Role="DocumentMeta" EntitySet="DocumentMeta" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="DocumentDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DocumentDBModelStoreContainer">
+    <EntitySet Name="DocumentMeta" EntityType="DocumentDBModel.Store.DocumentMeta" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocumentCollection" EntityType="DocumentDBModel.Store.DocumentCollection" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocumentContent" EntityType="DocumentDBModel.Store.DocumentContent" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_DocumentMeta_DocumentCollection" Association="DocumentDBModel.Store.FK_DocumentMeta_DocumentCollection">
+      <End Role="DocumentCollection" EntitySet="DocumentCollection" />
+      <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DocumentContent_DocumentMeta" Association="DocumentDBModel.Store.FK_DocumentContent_DocumentMeta">
+      <End Role="DocumentMeta" EntitySet="DocumentMeta" />
+      <End Role="DocumentContent" EntitySet="DocumentContent" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DocumentMeta">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UploadTime" Type="datetime" Nullable="false" />
+    <Property Name="DeleteTime" Type="datetime" Nullable="true" />
+    <Property Name="CollectionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DocumentCollection">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="64" />
+    <Property Name="DeleteTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="DocumentContent">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="RowGuid" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Data" Type="varbinary(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_DocumentMeta_DocumentCollection">
+    <End Role="DocumentCollection" Type="DocumentDBModel.Store.DocumentCollection" Multiplicity="1" />
+    <End Role="DocumentMeta" Type="DocumentDBModel.Store.DocumentMeta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentCollection">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DocumentMeta">
+        <PropertyRef Name="CollectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DocumentContent_DocumentMeta">
+    <End Role="DocumentMeta" Type="DocumentDBModel.Store.DocumentMeta" Multiplicity="1" />
+    <End Role="DocumentContent" Type="DocumentDBModel.Store.DocumentContent" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentMeta">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DocumentContent">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DocumentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -165,15 +165,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-          <EntitySetMapping Name="DocumentContent">
-            <EntityTypeMapping TypeName="DocumentDBModel.DocumentContent">
-              <MappingFragment StoreEntitySet="DocumentContent">
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <EntitySetMapping Name="DocumentContent">
+      <EntityTypeMapping TypeName="IsTypeOf(DocumentDBModel.DocumentContent)">
+        <MappingFragment StoreEntitySet="DocumentContent">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowGuid" ColumnName="RowGuid" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
