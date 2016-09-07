@@ -1,6 +1,6 @@
-﻿import { NgModule }      from '@angular/core';
+﻿import { UpgradeAdapter} from '@angular/upgrade';
+import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent }  from './app.component';
 import { FormsModule } from '@angular/forms';
 
@@ -10,3 +10,6 @@ import { FormsModule } from '@angular/forms';
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+let upgradeAdapter = new UpgradeAdapter(AppModule);
+upgradeAdapter.bootstrap(document.documentElement, ['documentApp']);
